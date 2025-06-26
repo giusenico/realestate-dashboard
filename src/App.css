@@ -1,0 +1,56 @@
+/* Rimuove il bordo blu di default quando si clicca sugli elementi della mappa */
+.leaflet-interactive:focus {
+  outline: none !important;
+}
+
+.leaflet-tooltip.region-tooltip {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-dark);
+  color: var(--text-secondary);
+  font-size: 2rem;
+  font-style: italic;
+}
+
+/* Stile per il popup dei comuni */
+.comune-popup .leaflet-popup-content-wrapper {
+  background-color: #2c3e50; /* Sfondo scuro coerente con la UI */
+  color: #ecf0f1;           /* Testo chiaro */
+  border: 1px solid #ffeb3b;
+  border-radius: 5px;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+}
+
+.comune-popup .leaflet-popup-content {
+  margin: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+/* Colora il triangolino del popup per coerenza */
+.comune-popup .leaflet-popup-tip {
+  background: #2c3e50;
+  border-top-color: #ffeb3b;
+}
+
+/* Stile base per i tooltip (puoi personalizzarlo) */
+.region-tooltip {
+  background-color: rgba(44, 62, 80, 0.9);
+  border: 1px solid #7f8c8d;
+  color: #ecf0f1;
+}

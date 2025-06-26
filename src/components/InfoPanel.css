@@ -1,0 +1,373 @@
+/* src/components/InfoPanel.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* === Design system confinato a .info-panel === */
+.info-panel {
+  /* Colors - Base & Text */
+  --bg-primary: #1A1D24;
+  --text-primary: #EAECEF;
+  --text-secondary: #A0AEC0;
+  --text-muted: #718096;
+  
+  /* Colors - Accents & States */
+  --color-accent-primary: #00e1ff;
+  --color-accent-primary-hover: #00b8d4;
+  --color-accent-secondary: #FFD60A;
+  --color-success: #00C853;
+  --color-danger: #FF5252;
+  --color-danger-hover: #D50000;
+
+  /* Glassmorphism Effect */
+  --glass-bg: rgba(44, 49, 58, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 10px;
+
+  /* Typography */
+  --font-family-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Sizing & Spacing */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --panel-padding: 24px;
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  padding: var(--panel-padding);
+  display: flex;
+  height: 100vh;
+  width: 800px;         /* valore ridotto per modalità side panel */
+  min-width: 280px;
+  flex-direction: column;
+  font-family: var(--font-family-main);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* === Header & Search Bar === */
+.info-panel .panel-header {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.info-panel .panel-header h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0 0 8px;
+  background: linear-gradient(45deg, var(--color-accent-primary), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.info-panel .panel-header .intro-text {
+  font-size: 0.95em;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.info-panel .search-bar {
+  display: flex;
+}
+
+.info-panel .search-bar input[type="text"] {
+  flex-grow: 1;
+  padding: 12px 15px;
+  border: 1px solid var(--glass-border);
+  background-color: var(--glass-bg);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+  font-size: 0.9em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.info-panel .search-bar input[type="text"]::placeholder {
+  color: var(--text-muted);
+}
+
+.info-panel .search-bar input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 3px rgba(0,225,255,0.2);
+}
+
+.info-panel .search-bar button {
+  padding: 12px 18px;
+  background-color: var(--color-accent-primary);
+  color: var(--bg-primary);
+  font-weight: 600;
+  border: none;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.info-panel .search-bar button:hover {
+  background-color: var(--color-accent-primary-hover);
+}
+
+/* === Content & Footer === */
+.info-panel .panel-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.info-panel .panel-footer {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 15px;
+  margin-top: auto;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* === Feature Details (Glass Effect) === */
+.info-panel .feature-details-container {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  padding: var(--panel-padding);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 24px;
+}
+
+.info-panel .region-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.info-panel .region-header h3 {
+  font-size: 1.75em;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.info-panel .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-panel .discover-more-button {
+  background: linear-gradient(45deg, var(--color-accent-primary), var(--color-accent-primary-hover));
+  color: var(--bg-primary);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  box-shadow: 0 2px 8px rgba(0,225,255,0.2);
+}
+
+.info-panel .discover-more-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,225,255,0.3);
+}
+
+.info-panel .feature-type-badge {
+  background-color: var(--color-accent-secondary);
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+.info-panel .reset-button {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--text-secondary);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.info-panel .reset-button:hover {
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #fff;
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* === Stats & Data Sections === */
+.info-panel .stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.info-panel .stat-item {
+  background-color: rgba(0,0,0,0.2);
+  padding: 16px;
+  border-radius: var(--border-radius-md);
+  text-align: center;
+  border: 1px solid var(--glass-border);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.info-panel .stat-item:hover {
+  transform: translateY(-3px);
+  background-color: rgba(0,0,0,0.3);
+}
+
+.info-panel .stat-item .stat-value {
+  font-size: 1.7em;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.info-panel .stat-item .stat-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+.info-panel .market-phase-section h4,
+.info-panel .geo-data-section h4 {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.info-panel .market-phase-box {
+  background-color: transparent;
+  border-left: 4px solid; /* colore assegnato via style inline */
+  padding: 15px;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+.info-panel .market-phase-box h5 {
+  font-size: 1.3em;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.info-panel .market-phase-box p {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.info-panel .geo-data-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.info-panel .geo-data-section li {
+  margin-bottom: 10px;
+  font-size: 0.85em;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.info-panel .geo-data-section li strong {
+  color: var(--text-secondary);
+}
+
+.info-panel .geo-data-section li span {
+  color: var(--text-primary);
+  text-align: right;
+}
+
+/* === Chart & Placeholder Sections === */
+.info-panel .housing-cycle-header {
+  padding: 10px 15px;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 15px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.info-panel .housing-cycle-header h4 {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.info-panel .chart-placeholder,
+.info-panel .placeholder-view {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--border-radius-lg);
+  padding: var(--panel-padding);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.info-panel .placeholder-view {
+  min-height: 250px;
+}
+
+.info-panel .placeholder-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.info-panel .placeholder-view::before {
+  content: "🗺️";
+  font-size: 3.5em;
+  margin-bottom: 15px;
+  filter: grayscale(0.5);
+}
+
+/* === Scrollbar === */
+.info-panel::-webkit-scrollbar,
+.info-panel .panel-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.info-panel::-webkit-scrollbar-track,
+.info-panel .panel-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.info-panel::-webkit-scrollbar-thumb,
+.info-panel .panel-content::-webkit-scrollbar-thumb {
+  background-color: var(--glass-bg);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+}
+
+/* === Recharts Tooltip Override === */
+.info-panel .recharts-default-tooltip {
+  background-color: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  border-radius: var(--border-radius-md) !important;
+}
+
+.info-panel .recharts-tooltip-label {
+  color: var(--text-primary) !important;
+}

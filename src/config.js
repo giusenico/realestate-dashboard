@@ -1,0 +1,11 @@
+export const GEO_PROPERTIES = {
+  REGION_CODE: 'COD_REG',
+  REGION_NAME: 'DEN_REG',
+  PROVINCE_CODE: 'COD_PROV',
+  PROVINCE_NAME: 'DEN_UTS', // Usa DEN_UTS come primario per coerenza
+  PROVINCE_ALT_NAME: 'DEN_PROV', // Fallback se DEN_UTS non esiste
+  PROVINCE_SIGLA: 'SIGLA',
+  COMUNE_CODE: 'PRO_COM_T',
+  COMUNE_NAME: 'COMUNE',
+};
+

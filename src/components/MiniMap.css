@@ -1,0 +1,23 @@
+/* src/components/MiniMap.css */
+
+.minimap-container {
+  height: 350px; /* Or any height you prefer */
+  width: 100%;
+  border-radius: 8px; /* Match the card style */
+  overflow: hidden; /* Ensures the map stays within the rounded corners */
+  background-color: #333; /* Dark background for loading state */
+}
+
+/* This targets the actual map element rendered by Leaflet */
+.minimap-container .leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.minimap-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-size: 0.9rem;
+}

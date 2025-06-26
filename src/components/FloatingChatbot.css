@@ -1,0 +1,77 @@
+/* src/components/FloatingChatbot.css */
+
+/* --- PULSANTE FLOTTANTE (FAB) --- */
+.chat-fab {
+    position: fixed; /* Cruciale: rimane fisso durante lo scroll */
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #00e1ff; /* Colore ben visibile */
+    color: #0d121c;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Assicura che sia sempre in primo piano */
+    transition: transform 0.2s ease-in-out, background-color 0.2s;
+}
+
+.chat-fab:hover {
+    transform: scale(1.1);
+    background-color: #00b0d8;
+}
+
+.chat-fab svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* --- FINESTRA DEL CHATBOT --- */
+.chatbot-window {
+    position: fixed; /* Cruciale: rimane fissa come il pulsante */
+    bottom: calc(2rem + 75px); /* Posizionata sopra il pulsante (60px di altezza + 15px di spazio) */
+    right: 2rem;
+    width: 370px;
+    max-width: 90vw;
+    height: 65vh; /* Diamo un'altezza relativa allo schermo */
+    max-height: 550px;
+    min-height: 400px;
+    z-index: 999;
+    
+    /* Stato iniziale (nascosto) */
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none; /* Non intercettabile dai click quando nascosto */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Contenitore per il chatbot vero e proprio */
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden; /* Nasconde il contenuto che esce dagli angoli arrotondati */
+    display: flex; /* Permette al figlio .chatbot-container di riempire lo spazio */
+}
+
+/* Stato quando è visibile (viene aggiunta la classe .open) */
+.chatbot-window.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* Rende la finestra interattiva */
+}
+
+/*
+  Adattiamo gli stili del TUO Chatbot.js per funzionare qui dentro.
+  Il componente Chatbot.js ora vive all'interno di .chatbot-window.
+*/
+.chatbot-window .chatbot-container {
+    width: 100%; /* Occupa tutta la larghezza della finestra */
+    height: 100%; /* Occupa tutta l'altezza della finestra */
+    background-color: #1e293b; /* Usa il tuo colore di sfondo originale */
+    /* Rimuoviamo i vincoli di altezza che erano in Chatbot.css, 
+       ora li gestisce il genitore .chatbot-window */
+    max-height: none;
+    min-height: 0;
+}

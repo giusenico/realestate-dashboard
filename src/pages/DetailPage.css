@@ -1,0 +1,221 @@
+/* src/pages/DetailPage.css */
+
+/* ===== Variabili ===== */
+.detail-page {
+  --bg-primary: #121212;
+  --text-primary: #e0f7fa;
+  --text-secondary: #90a4ae;
+  --font-family-main: 'Roboto', sans-serif;
+  --glass-bg: rgba(25, 25, 30, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-blur: 12px;
+  --card-padding: 1.5rem;
+  --border-radius-lg: 1rem;
+  --color-accent-primary: #00e1ff;
+  --color-accent-primary-hover: #00c4e6;
+  --color-accent-secondary: #00b0d8;
+  --color-success: #4caf50;
+  --color-danger: #F44336; /* Aggiunta per coerenza */
+  --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --transition-fast: 0.2s ease-in-out;
+  --transition-smooth: 0.25s ease-out;
+  --gradient-header: linear-gradient(135deg, rgba(0,225,255,0.1) 0%, rgba(0,150,200,0.1) 100%);
+}
+
+/* ===== Pagina Dettaglio ===== */
+.detail-page {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-main);
+  padding: 2rem 3rem;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ===== Struttura Layout a Griglia ===== */
+.top-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px; 
+  grid-template-rows: auto auto 1fr;
+  gap: 2rem;
+  grid-template-areas:
+    "header   map"
+    "kpis     map"
+    "main     main";
+}
+
+.detail-header { grid-area: header; }
+.stats-grid { grid-area: kpis; }
+.map-column { grid-area: map; }
+.main-content-column { grid-area: main; }
+
+/* ===== Header ===== */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.detail-header .title-group { display: flex; align-items: center; gap: 1.5rem; }
+.detail-header h1 { margin: 0; font-size: 3rem; font-weight: 700; color: var(--text-primary); letter-spacing: 1px; }
+.feature-type-badge.detail-badge { font-size: 0.9rem; padding: 0.5rem 1rem; font-weight: 600; border-radius: 50px; color: #000; }
+.detail-badge.type-regione { background-color: var(--color-accent-secondary); }
+.detail-badge.type-provincia { background-color: var(--color-success); color: #fff; }
+.detail-badge.type-comune { background-color: var(--color-accent-primary); }
+.detail-badge.type-nazione { background-color: var(--color-accent-primary); }
+
+/* ===== Pulsante Indietro ===== */
+.back-button {
+  text-decoration: none;
+  background-color: var(--color-accent-primary);
+  color: var(--bg-primary);
+  /* MODIFICA: Aumentato padding e font-size per ingrandire il pulsante */
+  padding: 0.9rem 1.8rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: var(--shadow-light);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+}
+.back-button:hover {
+  background-color: var(--color-accent-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
+}
+
+/* ===== Statistiche KPI ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.stat-item {
+  background-color: rgba(255, 255, 255, 0.05); 
+  border-radius: var(--border-radius-lg); 
+  padding: 1.5rem; 
+  position: relative; 
+  overflow: hidden; 
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+.stat-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(0,225,255,0.1), transparent); pointer-events: none; }
+.stat-item:hover { background-color: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+.stat-value { display: block; font-size: 2.4rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; }
+.stat-label { display: block; font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; align-items: center; display: flex; }
+
+/* 
+  =============================================================
+  ===== NUOVI STILI PER CONTESTO KPI E TOOLTIP (MIGLIORATI) ====
+  =============================================================
+*/
+.stat-comparison {
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+.info-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  font-weight: bold;
+  color: var(--text-secondary);
+  cursor: help;
+  border: 1.5px solid var(--text-secondary);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  transition: all var(--transition-smooth);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.info-icon:hover {
+  background-color: var(--color-accent-primary);
+  color: var(--bg-primary);
+  border-color: var(--color-accent-primary);
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(0, 225, 255, 0.5);
+}
+/* ============================================================= */
+
+
+/* ===== Colonna della Mappa ===== */
+.map-column {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-light);
+  border-radius: var(--border-radius-lg);
+  padding: 0.75rem;
+  height: 100%;
+}
+.map-column .minimap-container {
+  height: 100% !important;
+  width: 100%;
+  border-radius: calc(var(--border-radius-lg) - 0.5rem);
+}
+
+/* ===== Colonna del Contenuto Principale ===== */
+.main-content-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.info-card {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-light);
+  padding: var(--card-padding);
+  border-radius: var(--border-radius-lg);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.info-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-heavy); }
+.info-card h3 { margin: 0 0 1rem; font-size: 1.4rem; font-weight: 600; color: var(--color-accent-primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 0.75rem; }
+.info-card ul { list-style: none; margin: 0; padding: 0; }
+.info-card li { display: flex; justify-content: space-between; padding: 0.6rem 0; font-size: 0.95rem; border-bottom: 1px solid var(--glass-border); }
+.info-card li:last-child { border-bottom: none; }
+.info-card li strong { color: var(--text-secondary); }
+.info-card li span { color: var(--text-primary); }
+
+/* ===== Stato di caricamento ed errori ===== */
+.detail-page-status { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 80vh; text-align: center; gap: 1.5rem; }
+.detail-page-status h1 { color: var(--text-primary); font-weight: 500; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .detail-page { padding: 1.5rem; }
+  .top-layout-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas:
+      "header"
+      "map"
+      "kpis"
+      "main";
+  }
+  .map-column {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-page { padding: 1.5rem 1rem; }
+  .detail-header { flex-direction: column; align-items: flex-start; }
+  .detail-header h1 { font-size: 2.5rem; }
+  .stats-grid { 
+    grid-template-columns: 1fr; 
+  }
+  .stat-value { font-size: 2rem; }
+}
