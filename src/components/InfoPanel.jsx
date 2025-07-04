@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './InfoPanel.css';
-import { loadAndParseHousingCycleData, scaleTo100 } from '../utils/dataUtils';
+import { scaleTo100 } from '../utils/dataUtils';
 import { FaSearch, FaEye, FaQuestionCircle, FaMapMarkedAlt } from 'react-icons/fa';
 
 // Funzioni helper per la colorazione dinamica dei box regione
@@ -14,27 +14,24 @@ const interpolateColor = (color1, color2, factor) => {
 };
 
 const getStyleForScore = (score) => {
-  const red = [211, 47, 47];    // Un rosso più deciso ma non troppo acceso
-  const yellow = [255, 193, 7];   // Giallo materiale
-  const green = [56, 142, 60];    // Verde più scuro e bilanciato
+  const red = [211, 47, 47];
+  const yellow = [255, 193, 7];
+  const green = [56, 142, 60];
 
   let color;
 
   if (score === null || isNaN(score)) {
-    color = 'rgb(74, 85, 104)'; // Grigio neutro per dati mancanti
+    color = 'rgb(74, 85, 104)';
   } else if (score < 50) {
-    // fattore da 0 (rosso) a 1 (giallo)
     const factor = score / 50;
     color = interpolateColor(red, yellow, factor);
   } else {
-    // fattore da 0 (giallo) a 1 (verde)
     const factor = (score - 50) / 50;
     color = interpolateColor(yellow, green, factor);
   }
-  
-  return { 
-    backgroundColor: color,
-    backgroundImage: `linear-gradient(135deg, ${color}, rgba(0,0,0,0.7))`
+
+  return {
+    '--accent-color': color,
   };
 };
 
@@ -215,21 +212,34 @@ const InfoPanel = ({ selectedFeature, onReset, onRegionSelect, allHousingData })
       subLevel = 'Regioni';
       const regionKeys = Object.keys(allHousingData.healthIndexData).filter(k => k !== 'ITALIA');
       
-      const latestDataPairs = regionKeys.map(key => {
-        const regionData = allHousingData.healthIndexData[key];
-        if (regionData && regionData.length > 0) {
+      const latestDataPairs = regionKeys
+        .map((key) => {
+          const regionData = allHousingData.healthIndexData[key];
+          const cycleData = allHousingData.regionalData[key];
+
+          if (regionData && regionData.length > 0) {
             const last = regionData[regionData.length - 1];
-            const prev = regionData.length > 1 ? regionData[regionData.length - 2] : null;
-            return { last, prev };
-        }
-        return null;
-      }).filter(Boolean);
+            const prev =
+              regionData.length > 1 ? regionData[regionData.length - 2] : null;
+
+            let cyclePhase = phaseDetails[0];
+            if (cycleData && cycleData.length >= 2) {
+              const lastCycle = cycleData[cycleData.length - 1];
+              const prevCycle = cycleData[cycleData.length - 2];
+              cyclePhase = determineHousingCyclePhase(lastCycle, prevCycle);
+            }
+
+            return { last, prev, cyclePhase };
+          }
+          return null;
+        })
+        .filter(Boolean);
 
       if (latestDataPairs.length > 0) {
         const healthScores = latestDataPairs.map(d => d.last.healthIndex).filter(v => v !== null);
         const healthRange = [Math.min(...healthScores), Math.max(...healthScores)];
 
-        moversData = latestDataPairs.map(d => {
+        moversData = latestDataPairs.map((d) => {
           const currentScore = scaleTo100(d.last.healthIndex, healthRange);
           
           let scoreVariation = null;
@@ -241,11 +251,14 @@ const InfoPanel = ({ selectedFeature, onReset, onRegionSelect, allHousingData })
           }
 
           return {
-            name: d.last.regionName.charAt(0).toUpperCase() + d.last.regionName.slice(1).toLowerCase(),
+            name:
+              d.last.regionName.charAt(0).toUpperCase() +
+              d.last.regionName.slice(1).toLowerCase(),
             healthIndex: currentScore,
             variation: scoreVariation,
             fasciaSalute: d.last.fasciaSalute || 'N/D',
             rawName: d.last.regionName,
+            cyclePhase: d.cyclePhase,
           };
         });
         
@@ -296,7 +309,11 @@ const InfoPanel = ({ selectedFeature, onReset, onRegionSelect, allHousingData })
             >
               <div className="mover-region-info">
                 <span className="mover-name-apple">{mover.name}</span>
-                <span className="mover-fascia-salute">{mover.fasciaSalute}</span>
+                <span className="mover-fascia-salute">
+                  {mover.fasciaSalute.includes('Equilibrio') && mover.cyclePhase
+                    ? mover.cyclePhase.name
+                    : mover.fasciaSalute}
+                </span>
               </div>
               <div className="mover-performance-apple">
                 <HealthIndicator value={mover.healthIndex} variation={mover.variation} />
