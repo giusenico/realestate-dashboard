@@ -46,9 +46,13 @@
 
 .drawer-header h2 {
     margin: 0;
-    font-size: 1.75rem; /* Larger */
+    font-size: 1.75rem;
     font-weight: 700;
-    color: var(--text-primary);
+    background: linear-gradient(45deg, var(--color-primary-accent), #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(30,136,229,0.3);
 }
 
 .close-btn {
