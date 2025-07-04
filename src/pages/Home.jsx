@@ -33,15 +33,30 @@ const Home = () => {
 
   const handleRegionSelectFromList = (regionIdentifier) => {
     if (!housingData || !housingData.healthIndexData) return;
-    
+
     const regionName = normalizeRegionName(regionIdentifier.DEN_REG);
     const healthDataForRegion = housingData.healthIndexData[regionName];
 
     if (healthDataForRegion && healthDataForRegion.length > 0) {
       const latestData = healthDataForRegion[healthDataForRegion.length - 1];
+      const prevData = healthDataForRegion.length > 1 ? healthDataForRegion[healthDataForRegion.length - 2] : null;
+
+      const kpiVariations = {};
+      if (latestData.kpis && prevData && prevData.kpis) {
+        Object.keys(latestData.kpis).forEach((kpiKey) => {
+          const curr = latestData.kpis[kpiKey];
+          const prev = prevData.kpis[kpiKey];
+          kpiVariations[kpiKey] =
+            curr !== null && prev !== null && !Number.isNaN(curr) && !Number.isNaN(prev)
+              ? curr - prev
+              : null;
+        });
+      }
+
       setDrawerRegionData({
         ...latestData,
         name: regionName.charAt(0).toUpperCase() + regionName.slice(1).toLowerCase(),
+        kpiVariations,
       });
     }
   };
