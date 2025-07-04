@@ -1,0 +1,267 @@
+/* RegionDetailDrawer.css - Final Polish */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.drawer {
+    /* === Inherited Variables === */
+    --bg-primary: #1A1D24;
+    --text-primary: #EAECEF;
+    --text-secondary: #A0AEC0;
+    --font-family-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    
+    /* === Unified Color Palette === */
+    --bg-container: #2C313A;
+    --border-container: rgba(255, 255, 255, 0.08);
+    --border-radius-lg: 16px;
+    
+    --color-positive: #34C759; /* Green */
+    --color-negative: #E53935; /* Professional Red */
+    --color-primary-accent: #1E88E5; /* Professional Blue */
+    --color-warning: #FB8C00;  /* Professional Orange */
+
+    /* Base Styles */
+    width: 380px; /* Increased width */
+    height: 100vh;
+    background-color: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-family-main);
+    border-left: 1px solid var(--border-container);
+    flex-shrink: 0;
+    overflow-y: auto; /* Make the whole drawer scrollable */
+}
+
+/* === Header === */
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid var(--border-container);
+    flex-shrink: 0;
+    position: sticky; /* Keep header at the top */
+    top: 0;
+    background-color: var(--bg-primary); /* Add background to prevent content showing through */
+    z-index: 10; /* Ensure header is above scrolling content */
+}
+
+.drawer-header h2 {
+    margin: 0;
+    font-size: 1.75rem; /* Larger */
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.close-btn {
+    background-color: rgba(255,255,255,0.1);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.close-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+/* === Content Area === */
+.drawer-content {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.drawer-content-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* === Indicator & Tooltip Styling === */
+.indicator-wrapper {
+    position: relative;
+}
+
+.indicator-container {
+    background-color: rgba(44, 49, 58, 0.6); /* --glass-bg from InfoPanel */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* --glass-border */
+    backdrop-filter: blur(10px); /* --glass-blur */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36); /* --box-shadow */
+    border-radius: 12px; /* --border-radius-lg */
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.indicator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.indicator-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+}
+
+.indicator-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.indicator-descriptor {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.indicator-performance {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.indicator-value {
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: var(--color-primary-accent);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.kpi-variation {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    margin-top: 8px;
+}
+
+.kpi-variation.positive {
+    background-color: rgba(52, 199, 89, 0.2);
+    color: var(--color-positive);
+    padding: 4px 10px;
+}
+
+.kpi-variation.negative {
+    background-color: rgba(229, 57, 53, 0.2);
+    color: var(--color-negative);
+    padding: 4px 10px;
+}
+
+.kpi-variation.neutral {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+
+.value-green { color: var(--color-positive); }
+.value-red { color: var(--color-negative); }
+.value-orange { color: var(--color-warning); }
+
+/* Tooltip styles */
+.tooltip-trigger {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: help;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.tooltip-trigger:hover {
+    opacity: 1;
+}
+
+.indicator-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background-color: #3d4451;
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Ignore mouse events when hidden */
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+}
+
+.indicator-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-15px);
+}
+
+/* === Slider Redesign === */
+.slider {
+    position: relative;
+    width: 100%;
+    height: 12px;
+}
+
+.slider-track, .slider-track-market {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Track Colors */
+.slider-track.kpi-track {
+    background: linear-gradient(90deg, var(--color-negative) 0%, var(--color-warning) 50%, var(--color-positive) 100%);
+}
+
+.slider-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    background-color: var(--color-primary-accent);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 4px var(--bg-container);
+}
+
+/* Specific thumb colors where needed */
+.slider-thumb.thumb-red { background-color: var(--color-negative); }
+.slider-thumb.thumb-orange { background-color: var(--color-warning); }
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    font-size: 0.9rem; /* Larger */
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Segmented Slider styles removed as they are no longer used */

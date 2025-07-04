@@ -1,32 +1,86 @@
 // src/pages/Home.jsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react'; // Aggiungi useEffect
 import MapChart from '../components/MapChart';
 import InfoPanel from '../components/InfoPanel';
+import RegionDetailDrawer from '../components/RegionDetailDrawer';
 import './Home.css';
+import { loadAndParseHousingCycleData, normalizeRegionName } from '../utils/dataUtils'; // IMPORTA LA FUNZIONE DI CARICAMENTO
 
 const Home = () => {
-  // Unico stato per la feature selezionata (regione, provincia o comune)
+  // Stato originale per la feature selezionata (corretto)
   const [selectedFeature, setSelectedFeature] = useState(null);
+  
+  // NUOVO: Stato per contenere i dati caricati e per il loading
+  const [housingData, setHousingData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [drawerRegionData, setDrawerRegionData] = useState(null);
 
-  // Unico handler che riceve le proprietà della feature cliccata dalla mappa
+  // NUOVO: Effetto per caricare i dati una sola volta all'avvio
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const data = await loadAndParseHousingCycleData();
+      setHousingData(data);
+      setLoading(false);
+    };
+    fetchData();
+  }, []); // L'array vuoto [] assicura che venga eseguito solo all'inizio
+
+  // Handler originale (corretto)
   const handleFeatureSelect = useCallback((properties) => {
     setSelectedFeature(properties);
   }, []);
 
+  const handleRegionSelectFromList = (regionIdentifier) => {
+    if (!housingData || !housingData.healthIndexData) return;
+    
+    const regionName = normalizeRegionName(regionIdentifier.DEN_REG);
+    const healthDataForRegion = housingData.healthIndexData[regionName];
+
+    if (healthDataForRegion && healthDataForRegion.length > 0) {
+      const latestData = healthDataForRegion[healthDataForRegion.length - 1];
+      setDrawerRegionData({
+        ...latestData,
+        name: regionName.charAt(0).toUpperCase() + regionName.slice(1).toLowerCase(),
+      });
+    }
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerRegionData(null);
+  };
+
+  // NUOVO: Mostra un messaggio di caricamento mentre i dati non sono pronti
+  if (loading || !housingData) {
+    return <div className="loading-screen">Caricamento dati...</div>;
+  }
+
+  // Il tuo JSX originale, con l'aggiunta della prop 'regionalData'
   return (
-    <div className="home-page">
-      <div className="map-container">
-        {/* Passiamo l'handler e la feature selezionata alla mappa */}
-        <MapChart 
-          onFeatureSelect={handleFeatureSelect} 
+    <div className={`home-page ${drawerRegionData ? 'drawer-open' : ''}`}>
+      <div className="sidebar">
+        <InfoPanel 
           selectedFeature={selectedFeature} 
+          onReset={() => handleFeatureSelect(null)} // Leggermente migliorato per chiarezza
+          // Passiamo anche i dati all'InfoPanel, probabilmente gli serviranno
+          allHousingData={housingData}
+          onRegionSelect={handleRegionSelectFromList}
+        />
+        <RegionDetailDrawer
+          regionData={drawerRegionData}
+          onClose={handleDrawerClose}
         />
       </div>
-      {/* Passiamo la feature selezionata e l'handler di reset al pannello */}
-      <InfoPanel 
-        selectedFeature={selectedFeature} 
-        onReset={handleFeatureSelect} // Passiamo la funzione per resettare (impostando a null)
-      />
+      <div className="map-container">
+        <MapChart 
+          onFeatureSelect={handleFeatureSelect} 
+          selectedFeature={selectedFeature}
+          // LA MODIFICA CHIAVE È QUI: Passa i dati alla mappa
+          regionalData={housingData.regionalData}
+          healthData={housingData.healthIndexData}
+          drawerRegion={drawerRegionData}
+        />
+      </div>
     </div>
   );
 };
