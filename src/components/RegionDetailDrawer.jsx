@@ -44,6 +44,15 @@ const KpiIndicator = ({ title, value, variation, tooltipText }) => {
     const descriptor = getKpiDescriptor(value);
     const displayValue = value !== null ? value.toFixed(0) : 'N/D';
 
+    const accentColor =
+        value === null || isNaN(value)
+            ? '#4a5568'
+            : value > 70
+            ? '#34C759'
+            : value > 30
+            ? '#FB8C00'
+            : '#E53935';
+
     const renderVariation = () => {
         if (variation === null || variation === undefined || isNaN(variation)) {
             return null;
@@ -59,15 +68,6 @@ const KpiIndicator = ({ title, value, variation, tooltipText }) => {
             <span className={`kpi-variation ${variationClass}`}>{sign}{variation.toFixed(0)}</span>
         );
     };
-
-    const accentColor =
-        value === null || isNaN(value)
-            ? '#4a5568'
-            : value > 70
-            ? '#34C759'
-            : value > 30
-            ? '#FB8C00'
-            : '#E53935';
 
     return (
         <div className="indicator-wrapper">
@@ -112,8 +112,6 @@ const RegionDetailDrawer = ({ regionData, onClose }) => {
         return null;
     }
 
-    // regionData is expected to be the latest health data object for the region
-    // e.g., { name: 'Lombardia', healthIndex: 0.8, variation: 0.05, kpis: {...} }
     const { kpis, name, kpiVariations = {} } = regionData;
 
     return (
