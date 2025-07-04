@@ -60,9 +60,18 @@ const KpiIndicator = ({ title, value, variation, tooltipText }) => {
         );
     };
 
+    const accentColor =
+        value === null || isNaN(value)
+            ? '#4a5568'
+            : value > 70
+            ? '#34C759'
+            : value > 30
+            ? '#FB8C00'
+            : '#E53935';
+
     return (
         <div className="indicator-wrapper">
-            <div className="indicator-container">
+            <div className="indicator-container" style={{ '--accent-color': accentColor }}>
                 <div className="indicator-header">
                     <div className="indicator-title-group">
                         <span className="indicator-title">
