@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './InfoPanel.css';
-import { loadAndParseHousingCycleData, scaleTo100 } from '../utils/dataUtils';
+import { scaleTo100 } from '../utils/dataUtils';
 import { FaSearch, FaEye, FaQuestionCircle, FaMapMarkedAlt } from 'react-icons/fa';
 
 // Funzioni helper per la colorazione dinamica dei box regione
@@ -14,27 +14,24 @@ const interpolateColor = (color1, color2, factor) => {
 };
 
 const getStyleForScore = (score) => {
-  const red = [211, 47, 47];    // Un rosso più deciso ma non troppo acceso
-  const yellow = [255, 193, 7];   // Giallo materiale
-  const green = [56, 142, 60];    // Verde più scuro e bilanciato
+  const red = [211, 47, 47];
+  const yellow = [255, 193, 7];
+  const green = [56, 142, 60];
 
   let color;
 
   if (score === null || isNaN(score)) {
-    color = 'rgb(74, 85, 104)'; // Grigio neutro per dati mancanti
+    color = 'rgb(74, 85, 104)';
   } else if (score < 50) {
-    // fattore da 0 (rosso) a 1 (giallo)
     const factor = score / 50;
     color = interpolateColor(red, yellow, factor);
   } else {
-    // fattore da 0 (giallo) a 1 (verde)
     const factor = (score - 50) / 50;
     color = interpolateColor(yellow, green, factor);
   }
-  
-  return { 
-    backgroundColor: color,
-    backgroundImage: `linear-gradient(135deg, ${color}, rgba(0,0,0,0.7))`
+
+  return {
+    '--accent-color': color,
   };
 };
 
