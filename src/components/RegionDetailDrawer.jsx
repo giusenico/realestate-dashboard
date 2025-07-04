@@ -23,7 +23,7 @@ const getKpiDescriptor = (value) => {
     return { text: 'Basso', className: 'value-red' };
 };
 
-const KpiIndicator = ({ title, value, tooltipText }) => {
+const KpiIndicator = ({ title, value, variation, tooltipText }) => {
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     let hideTimeout;
 
@@ -44,9 +44,34 @@ const KpiIndicator = ({ title, value, tooltipText }) => {
     const descriptor = getKpiDescriptor(value);
     const displayValue = value !== null ? value.toFixed(0) : 'N/D';
 
+    const renderVariation = () => {
+        if (variation === null || variation === undefined || isNaN(variation)) {
+            return null;
+        }
+
+        if (Math.round(variation) === 0) {
+            return <span className="kpi-variation neutral">0</span>;
+        }
+
+        const variationClass = variation > 0 ? 'positive' : 'negative';
+        const sign = variation > 0 ? '+' : '';
+        return (
+            <span className={`kpi-variation ${variationClass}`}>{sign}{variation.toFixed(0)}</span>
+        );
+    };
+
+    const accentColor =
+        value === null || isNaN(value)
+            ? '#4a5568'
+            : value > 70
+            ? '#34C759'
+            : value > 30
+            ? '#FB8C00'
+            : '#E53935';
+
     return (
         <div className="indicator-wrapper">
-            <div className="indicator-container">
+            <div className="indicator-container" style={{ '--accent-color': accentColor }}>
                 <div className="indicator-header">
                     <div className="indicator-title-group">
                         <span className="indicator-title">
@@ -61,9 +86,10 @@ const KpiIndicator = ({ title, value, tooltipText }) => {
                         </span>
                         <span className={`indicator-descriptor ${descriptor.className}`}>{descriptor.text}</span>
                     </div>
-                    <span className={`indicator-value ${style.valueClass}`}>
-                        {displayValue}
-                    </span>
+                    <div className="indicator-performance">
+                        <span className={`indicator-value ${style.valueClass}`}>{displayValue}</span>
+                        {renderVariation()}
+                    </div>
                 </div>
                 <div className="slider">
                     <div className="slider-track kpi-track"></div>
@@ -88,7 +114,7 @@ const RegionDetailDrawer = ({ regionData, onClose }) => {
 
     // regionData is expected to be the latest health data object for the region
     // e.g., { name: 'Lombardia', healthIndex: 0.8, variation: 0.05, kpis: {...} }
-    const { kpis, name } = regionData;
+    const { kpis, name, kpiVariations = {} } = regionData;
 
     return (
         <div className="drawer">
@@ -101,21 +127,25 @@ const RegionDetailDrawer = ({ regionData, onClose }) => {
                     <KpiIndicator
                         title="Affordability"
                         value={kpis.affordability}
+                        variation={kpiVariations.affordability}
                         tooltipText={KPITooltips.affordability}
                     />
                     <KpiIndicator
                         title="Demand Pressure"
                         value={kpis.demandPressure}
+                        variation={kpiVariations.demandPressure}
                         tooltipText={KPITooltips.demandPressure}
                     />
                     <KpiIndicator
                         title="Market Liquidity"
                         value={kpis.liquidity}
+                        variation={kpiVariations.liquidity}
                         tooltipText={KPITooltips.liquidity}
                     />
                     <KpiIndicator
                         title="Price Momentum"
                         value={kpis.momentum}
+                        variation={kpiVariations.momentum}
                         tooltipText={KPITooltips.momentum}
                     />
                 </div>
