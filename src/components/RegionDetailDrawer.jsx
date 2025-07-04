@@ -60,6 +60,7 @@ const KpiIndicator = ({ title, value, variation, tooltipText }) => {
         );
     };
 
+ pweko1-codex/aggiungi-variazione-valore-in-regiondetaildrawer
     const accentColor =
         value === null || isNaN(value)
             ? '#4a5568'
@@ -69,6 +70,8 @@ const KpiIndicator = ({ title, value, variation, tooltipText }) => {
             ? '#FB8C00'
             : '#E53935';
 
+
+ main
     return (
         <div className="indicator-wrapper">
             <div className="indicator-container" style={{ '--accent-color': accentColor }}>
